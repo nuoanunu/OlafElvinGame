@@ -1,97 +1,43 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameUnit : MonoBehaviour {
-    public const int UNIT_TYPE_HERO = 1;
-    public const int UNIT_TYPE_CAVALRY = 2;
-    public const int UNIT_TYPE_INFANTRY = 3;
-    public const int UNIT_TYPE_SPEARMAN = 4;
+public abstract class GameUnit : MonoBehaviour
+{
+    public GameObject prefab;
+    public int moveSpeed = 10;
+    public float frameRate = 0.015f;
     public int unitHP;
     public int unitSide;
     public int unitType;
-    public int defAttr;
-    public int baseAtk;
-    private int damageToCavalry { get; set; }
-    private int damageToInfantry { get; set; }
-    private int damageToSpearMan { get; set; }
     public Vector3 unitPostition;
-    
-   
-    // Use this for initialization, not  constructor , weird huh?
-    void Start () {
-        switch (unitType) {
-            case UNIT_TYPE_CAVALRY:
-                damageToCavalry = 50;
-                damageToSpearMan = 20;
-                damageToInfantry = 100;
-                break;
-            case UNIT_TYPE_INFANTRY:
-                damageToCavalry = 20;
-                damageToSpearMan = 100;
-                damageToInfantry = 50;
-                break;
-            case UNIT_TYPE_SPEARMAN:
-                damageToCavalry = 100;
-                damageToSpearMan = 50;
-                damageToInfantry = 20;
-                break;
-            case UNIT_TYPE_HERO:
-                damageToCavalry = 100;
-                damageToSpearMan = 100;
-                damageToInfantry = 100;
-                break;
-        }
-        unitPostition = GetComponent<Transform>().position;
-        generateLinh();
-    }
-    public void generateLinh() {
-        //Generate lính, 10 giọt thì 10 cục ( mà h làm tạm trước đi lấy căn ra cho nó gần đúng :)) 10hp= 9hp gg )
-        for (int y = 0; y < Mathf.Floor(Mathf.Sqrt(unitHP)); y++)
-        {
-            for (int x = 0; x < Mathf.Floor(Mathf.Sqrt(unitHP)); x++)
-            {
+    public ArrayList childList;
+    public abstract int getDamage(GameUnit target);
+    public abstract void takeDamage(int damageTaken);
+    public IEnumerator MoveToPoint(Vector3 targetPostion)
+    {
+      
+        //small number to make it smooth, 0.04 makes it execute 25 times / sec
 
-				GameObject cube = (GameObject)Instantiate(Resources.Load ("2HandedWarrior/Prefabs/2Handed Warrior"));
-                cube.AddComponent<Rigidbody>();
-                cube.transform.localScale = new Vector3(0.2F, 0.2F, 0.2F);
-                //Tính tọa độ để generate lính ra , làm tạm 
-                float lx = (float)(unitPostition.x + 0.3 * (2 - x));
-                float lz = (float)(unitPostition.z + 0.3 * (2 - y));
-                cube.transform.position = new Vector3(lx, unitPostition.y, lz);
-                cube.transform.SetParent(this.transform);
-            }
+        while (transform.position.x != targetPostion.x || transform.position.y != targetPostion.y || transform.position.z != targetPostion.z)
+        {
+            yield return new WaitForSeconds(frameRate);
+            //use WaitForSecondsRealtime if you want it to be unaffected by timescale
+            float step = moveSpeed * frameRate;
+            transform.position = Vector3.MoveTowards(transform.position, targetPostion, step);
         }
+
     }
-    public void setHP(int newHP) {
-        if (newHP != unitHP) {
-            foreach (Transform child in this.transform)
-            {
-                GameObject.Destroy(child.gameObject);
-            }
-            generateLinh();
-        }
-     
+    public void MoveThenReturn(Vector3 targetPostion)
+    {
+
+        unitPostition = this.transform.position;
+        StartCoroutine(MoveToPoint(targetPostion));
+
     }
-	// Update is called once per frame
-	void Update () {
-        unitPostition = GetComponent<Transform>().position;
+    public void Move(Vector3 targetPostion)
+    {
+
+        StartCoroutine(MoveToPoint(targetPostion));
+
     }
-    public int getDamageToUnit(int enemyType) {
-        switch (enemyType) {
-            case UNIT_TYPE_CAVALRY:
-                return damageToCavalry;
-                break;
-            case UNIT_TYPE_INFANTRY:
-                return damageToInfantry;
-                break;
-            case UNIT_TYPE_SPEARMAN:
-                return damageToSpearMan;
-                break;
-            case UNIT_TYPE_HERO:
-                return 5;
-                break;
-        }
-        return 0;
-    }
-   
 }
