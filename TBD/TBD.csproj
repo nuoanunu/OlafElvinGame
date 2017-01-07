@@ -52,6 +52,9 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.Advertisements">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Advertisements.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
@@ -60,6 +63,9 @@
     </Reference>
     <Reference Include="UnityEngine.Analytics">
       <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Purchasing">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Purchasing.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
@@ -72,8 +78,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\MapManager.cs" />
+    <Compile Include="Assets\Pre.cs" />
+    <Compile Include="Assets\Script\GameMechanic\ArmyGroup.cs" />
+    <Compile Include="Assets\Script\GameMechanic\CosntantMaybe.cs" />
+    <Compile Include="Assets\Script\GameMechanic\Creep.cs" />
     <Compile Include="Assets\Script\GameMechanic\GameManager.cs" />
     <Compile Include="Assets\Script\GameMechanic\GameUnit.cs" />
+    <Compile Include="Assets\Script\GameMechanic\Hero.cs" />
+    <Compile Include="Assets\Script\GameMechanic\MapManager.cs" />
+    <Compile Include="Assets\Warrior Pack Bundle 2 FREE\Code\IKHands.cs" />
+    <Compile Include="Assets\Warrior Pack Bundle 2 FREE\Code\SmoothFollow.cs" />
+    <Compile Include="Assets\Warrior Pack Bundle 2 FREE\Code\WarriorAnimationDemoFREE.cs" />
     <Compile Include="Assets\Yuponic\YuME\Scripts\YuME_GizmoGrid.cs" />
     <Compile Include="Assets\Yuponic\YuME\Scripts\YuME_editorData.cs" />
     <Compile Include="Assets\Yuponic\YuME\Scripts\YuME_importerSettings.cs" />
