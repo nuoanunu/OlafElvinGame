@@ -5,9 +5,9 @@ using System;
 public class ArmyGroup : GameUnit
 {
     private int status;
-    private const int INFRANTRY_UNIT_TYPE = 1;
-    private const int CALAVRY_UNIT_TYPE = 2;
-    private const int SPEAR_UNIT_TYPE = 3;
+    private const char INFRANTRY_UNIT_TYPE = 'I';
+    private const char CALAVRY_UNIT_TYPE = 'C';
+    private const char SPEAR_UNIT_TYPE = 'S';
     private const int STATUS_IDLE = 1;
     private const int STATUS_CHARGING = 2;
     private const int STATUS_ATTACKING = 3;
@@ -76,43 +76,6 @@ public class ArmyGroup : GameUnit
         }
     }
     override
-    public int getDamage(GameUnit target)
-    {
-        Debug.Log(target.name +" : " + target.unitType +  " " + this.name+ " : " + this.unitType);
-        //Nếu là hero
-        if (target.unitType < 1)
-        {
-
-            int damage = 0;
-            for (int i = 0; i < unitHP; i++)
-            {
-                int randomAttack = UnityEngine.Random.Range(1, 100);
-                if (randomAttack > ((Hero)target).defAttr) damage = damage + 1;
-            }
-            return damage;
-        }
-        else
-        {
-            int targetType = target.unitType;
-            if (targetType == Counter)
-            {
-                int damage = (int)Mathf.Floor(UnityEngine.Random.Range(0.1f, 0.3f) * this.unitHP);
-                return damage;
-            }
-            else if (targetType == unitType)
-            {
-                int damage = (int)Mathf.Floor(UnityEngine.Random.Range(0.5f, 0.6f) * this.unitHP);
-                return damage;
-            }
-            else
-            {
-                int damage = (int)Mathf.Floor(UnityEngine.Random.Range(0.6f, 0.8f) * this.unitHP);
-                return damage;
-            }
-        }
-
-    }
-    override
     public void takeDamage(int damageTaken)
     {
         if (damageTaken > 0)
@@ -177,14 +140,8 @@ public class ArmyGroup : GameUnit
 
                 creepList.Add(cube);
             }
+			base.Init ();
 
-        }
-
-        switch (unitType)
-        {
-            case INFRANTRY_UNIT_TYPE: this.Counter = CALAVRY_UNIT_TYPE; break;
-            case CALAVRY_UNIT_TYPE: this.Counter = SPEAR_UNIT_TYPE; break;
-            case SPEAR_UNIT_TYPE: this.Counter = INFRANTRY_UNIT_TYPE; break;
         }
     }
     void Start()

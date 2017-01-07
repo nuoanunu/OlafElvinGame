@@ -37,8 +37,8 @@ public class MapManager : MonoBehaviour
 
         origin = mapVertexA.transform.position; 
 
-		GameObject nhat = spawnUnit ('I', "LinhCuaNhat", 8, 12);
-		GameObject nghia = spawnUnit ('I', "LinhCuaNghia", 8, 8);
+		GameObject nhat = spawnUnit ('C', "LinhCuaNhat", 20, 10, 8, 12);
+		GameObject nghia = spawnUnit ('I', "LinhCuaNghia", 15, 15, 8, 8);
 
     }
 
@@ -54,8 +54,11 @@ public class MapManager : MonoBehaviour
     }
 
 
-	GameObject spawnUnit (char unitType, string name, int posX, int posY){
+	GameObject spawnUnit (char unitType, string name, int atk, int def, int posX, int posY){
 		GameObject unit = (GameObject)Instantiate (Resources.Load ("Unit"));
+		unit.GetComponent<ArmyGroup>().unitType = unitType;
+		unit.GetComponent<ArmyGroup>().atkAttr = atk;
+		unit.GetComponent<ArmyGroup>().defAttr = def;
 		unit.transform.position = TilePos(posX, posY);
 		unit.name = name;
 
