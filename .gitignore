@@ -1,4 +1,12 @@
 **/metadata
 **/ShaderCache
 **/Temp
+**/ScriptAssemblies
+**/.vs
 *.userprefs
+*.csproj
+*.sln
+*.log
+*assetDatabase3
+*LastSceneManagerSetup.txt
+*CurrentLayout.dwlt
