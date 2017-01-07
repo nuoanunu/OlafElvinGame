@@ -14,7 +14,7 @@ public class MapManager : MonoBehaviour
 
     public int lenX;
     public int lenZ;
-    public const int distanceToController = 3; //thay vo day
+    public const float distanceToController = 0.5F; //thay vo day
 
     // Use this for initialization
     void Start()
@@ -35,11 +35,10 @@ public class MapManager : MonoBehaviour
         lenX = Mathf.Abs(dX);
         lenZ = Mathf.Abs(dZ);
 
-        origin = mapVertexA.transform.position;
+        origin = mapVertexA.transform.position; 
 
-        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.transform.position = TilePos(5, 5);
-
+		GameObject nhat = spawnUnit ('I', "LinhCuaNhat", 8, 12);
+		GameObject nghia = spawnUnit ('I', "LinhCuaNghia", 8, 8);
 
     }
 
@@ -53,4 +52,13 @@ public class MapManager : MonoBehaviour
     {
         return new Vector3(origin.x + dX / lenX * posX, origin.y + distanceToController, origin.z + dZ / lenZ * posZ);
     }
+
+
+	GameObject spawnUnit (char unitType, string name, int posX, int posY){
+		GameObject unit = (GameObject)Instantiate (Resources.Load ("Unit"));
+		unit.transform.position = TilePos(posX, posY);
+		unit.name = name;
+
+		return unit;
+	}
 }

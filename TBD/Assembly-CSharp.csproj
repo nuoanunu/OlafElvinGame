@@ -48,8 +48,12 @@
   <ItemGroup>
      <Compile Include="Assets\MapManager.cs" />
      <Compile Include="Assets\Pre.cs" />
+     <Compile Include="Assets\Script\GameMechanic\ArmyGroup.cs" />
+     <Compile Include="Assets\Script\GameMechanic\CosntantMaybe.cs" />
+     <Compile Include="Assets\Script\GameMechanic\Creep.cs" />
      <Compile Include="Assets\Script\GameMechanic\GameManager.cs" />
      <Compile Include="Assets\Script\GameMechanic\GameUnit.cs" />
+     <Compile Include="Assets\Script\GameMechanic\Hero.cs" />
      <Compile Include="Assets\Script\GameMechanic\MapManager.cs" />
      <Compile Include="Assets\Warrior Pack Bundle 2 FREE\Code\IKHands.cs" />
      <Compile Include="Assets\Warrior Pack Bundle 2 FREE\Code\SmoothFollow.cs" />
