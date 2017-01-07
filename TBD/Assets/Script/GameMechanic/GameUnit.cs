@@ -51,7 +51,7 @@ public class GameUnit : MonoBehaviour {
             for (int x = 0; x < Mathf.Floor(Mathf.Sqrt(unitHP)); x++)
             {
 
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+				GameObject cube = (GameObject)Instantiate(Resources.Load ("2HandedWarrior/Prefabs/2Handed Warrior"));
                 cube.AddComponent<Rigidbody>();
                 cube.transform.localScale = new Vector3(0.2F, 0.2F, 0.2F);
                 //Tính tọa độ để generate lính ra , làm tạm 
