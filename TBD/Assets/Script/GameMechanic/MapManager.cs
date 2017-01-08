@@ -15,11 +15,11 @@ public class MapManager : MonoBehaviour
     private int dZ;
     private Vector3 origin;
 
-	private const  string sceneDataDir = "SceneData/DefinedScenes/";
+	private const string sceneDataDir = "SceneData/DefinedScenes/";
 
     public int lenX;
-    public int lenZ;
-    public static readonly float distanceToController = 1.5f; //thay vo day
+	public int lenZ;
+    public static float distanceToController = 1.5f; //thay vo day
 
 	public string dataFileName;
 
@@ -55,26 +55,41 @@ public class MapManager : MonoBehaviour
 
     Vector3 TilePos(int posX, int posZ)
     {
-        return new Vector3(origin.x + dX / lenX * posX, origin.y + distanceToController, origin.z + dZ / lenZ * posZ);
+        return new Vector3(
+			origin.x + dX / lenX * posX, 
+			origin.y + distanceToController, 
+			origin.z + dZ / lenZ * posZ
+		);
     }
 
 
-	GameObject spawnUnit (string unitClass, string heroName, Vector3 position){
+	GameObject spawnUnit (string unitClass, GameObject hero, Vector3 position)
+	{
 		GameObject unit = (GameObject)Instantiate (Resources.Load ("ArmyBase"));
 		GameConst.ClassInfo classInfo = GameConst.Consts.classes [unitClass];
+
 		unit.GetComponent<ArmyGroup>().unitType = classInfo.unitType;
-		unit.GetComponent<ArmyGroup>().atkAttr = classInfo.baseAtk;
-		unit.GetComponent<ArmyGroup>().defAttr = classInfo.baseDef;
+		unit.GetComponent<ArmyGroup>().baseAtk = classInfo.baseAtk;
+		unit.GetComponent<ArmyGroup>().baseDef = classInfo.baseDef;
+		unit.GetComponent<ArmyGroup>().moveRange = classInfo.moveRange;
 		unit.transform.position = position;
-		unit.name = heroName + "Unit";
+		unit.name = hero.name + "Unit";
+		unit.GetComponent<ArmyGroup>().hero = hero;
 
 		return unit;
 	}
-	GameObject spawnHero (char unitType, string name, int atk, int def, Vector3 position){
+	GameObject spawnHero (char unitType, string name, int atk, int def, int atkAura, int defAura, 
+		int commandRange, int moveRange, Vector3 position)
+	{
 		GameObject unit = (GameObject)Instantiate (Resources.Load ("HeroBase"));
+
 		unit.GetComponent<Hero>().unitType = unitType;
 		unit.GetComponent<Hero>().atkAttr = atk;
 		unit.GetComponent<Hero>().defAttr = def;
+		unit.GetComponent<Hero>().atkAura = atkAura;
+		unit.GetComponent<Hero>().defAura = defAura;
+		unit.GetComponent<Hero>().moveRange = moveRange;
+		unit.GetComponent<Hero>().commandRange = commandRange;
 		unit.transform.position = position;
 		unit.name = name;
 
@@ -94,13 +109,15 @@ public class MapManager : MonoBehaviour
 			string heroName = unitData ["name"].Value;
 			int heroAtk = unitData ["atk"].AsInt;
 			int heroDef = unitData ["def"].AsInt;
+			int heroAtkAura = unitData ["atkAura"].AsInt;
+			int heroDefAura = unitData ["defAura"].AsInt;
 			int heroPosX = unitData ["posX"].AsInt;
 			int heroPosY = unitData ["posY"].AsInt;
-			print (heroType);
-			print (heroName);
-			print (heroAtk);
-			print (heroDef);
-			spawnHero (heroType, heroName, heroAtk, heroDef, TilePos(heroPosX, heroPosY));
+			int commandRange = unitData ["commandRange"].AsInt;
+			int moveRange = unitData ["moveRange"].AsInt;
+
+			GameObject hero = spawnHero (heroType, heroName, heroAtk, heroDef, heroAtkAura, heroDefAura, 
+				commandRange, moveRange, TilePos(heroPosX, heroPosY));
 
 			//Initialize Stack of possible positions for armies
 			Queue<Vector3> possiblePositions = new Queue<Vector3> ();
@@ -113,12 +130,12 @@ public class MapManager : MonoBehaviour
 			possiblePositions.Enqueue(TilePos(heroPosX-1, heroPosY+1));
 			possiblePositions.Enqueue(TilePos(heroPosX-1, heroPosY-1));
 
-			//Create
+			//Create armies around the hero
 			JSONNode armyData = unitData ["army"];
 
 			for (int j = 0; j < armyData.Count; j++) 
 			{	
-				spawnUnit (unitData ["army"] [j].Value, heroName, possiblePositions.Dequeue());
+				spawnUnit (unitData ["army"] [j].Value, hero, possiblePositions.Dequeue());
 			}
 		}
 	}

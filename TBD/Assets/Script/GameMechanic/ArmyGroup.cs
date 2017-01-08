@@ -5,15 +5,19 @@ using System;
 public class ArmyGroup : GameUnit
 {
     private int status;
-    private const char INFANTRY_UNIT_TYPE = 'I';
-    private const char CALAVRY_UNIT_TYPE = 'C';
-    private const char SPEAR_UNIT_TYPE = 'S';
 
     private const int STATUS_IDLE = 1;
     private const int STATUS_CHARGING = 2;
     private const int STATUS_ATTACKING = 3;
 
 	private ArrayList creepList;
+
+	public GameObject hero;
+
+	public int baseAtk;
+	public int baseDef;
+	public int extraAtk;
+	public int extraDef;
 
     public IEnumerator initFightingSequence(GameUnit target)
     {
@@ -112,13 +116,21 @@ public class ArmyGroup : GameUnit
                 //Row thứ 2 thì 4 thằng 
                 if (i == 1)
                 {
-                    cube.transform.position = new Vector3(this.transform.position.x - (1 - i) * 0.3f, this.transform.position.y - MapManager.distanceToController + 0.5f, this.transform.position.z - (1.5f - z) * 0.25f);
+                    cube.transform.position = new Vector3(
+						this.transform.position.x - (1 - i) * 0.3f, 
+						this.transform.position.y - MapManager.distanceToController + 0.5f, 
+						this.transform.position.z - (1.5f - z) * 0.25f
+					);
                     //set relative position
                     cube.GetComponent<Creep>().ralativePosition = new Vector3((1 - i) * 0.3f, 0, (1.5f - z) * 0.25f);
                 }
                 else
                 {
-                    cube.transform.position = new Vector3(this.transform.position.x - (1 - i) * 0.3f, this.transform.position.y - MapManager.distanceToController + 0.5f, this.transform.position.z - (1 - z) * 0.3f);
+                    cube.transform.position = new Vector3(
+						this.transform.position.x - (1 - i) * 0.3f, 
+						this.transform.position.y - MapManager.distanceToController + 0.5f, 
+						this.transform.position.z - (1 - z) * 0.3f
+					);
                     //set relative position
                     cube.GetComponent<Creep>().ralativePosition = new Vector3((1 - i) * 0.3f, 0, (1 - z) * 0.3f);
                 }
@@ -135,7 +147,11 @@ public class ArmyGroup : GameUnit
                 //Row thứ 2 thì 4 thằng 
                 if (i == 1)
                 {
-                    cube.transform.position = new Vector3(this.transform.position.x - (1 - i) * 0.3f, this.transform.position.y - MapManager.distanceToController +0.5f, this.transform.position.z - (1.5f - z) * 0.25f);
+                    cube.transform.position = new Vector3(
+						this.transform.position.x - (1 - i) * 0.3f, 
+						this.transform.position.y - MapManager.distanceToController +0.5f,
+						this.transform.position.z - (1.5f - z) * 0.25f
+					);
                     //set relative position
                     cube.GetComponent<Creep>().ralativePosition = new Vector3((1 - i) * 0.3f, 0, (1.5f - z) * 0.25f);
                 }
@@ -157,8 +173,21 @@ public class ArmyGroup : GameUnit
     // Update is called once per frame
     void Update()
     {
-      
+		int dx =  (int)Mathf.Abs(this.transform.position.x - hero.transform.position.x);
+		int dz =  (int)Mathf.Abs(this.transform.position.x - hero.transform.position.x);
+		Hero heroScript = hero.GetComponent<Hero> ();
+		if (dx + dz <= heroScript.commandRange) {
+			extraAtk = heroScript.atkAura;
+			extraDef = heroScript.defAura;
+		} 
+		else 
+		{
+			extraAtk = 0;
+			extraDef = 0;
+		}
 
+		atkAttr = baseAtk + extraAtk;
+		defAttr = baseDef + extraDef;
 
     }
     public void OnMouseDown()

@@ -4,8 +4,12 @@
         "name": "LinhCuaNhat",
         "atk": 20,
         "def": 10,
+	"atkAura": 4,
+	"defAura": 3,
         "posX": 8,
         "posY": 12,
+	"commandRange": 3,
+	"moveRange": 5,
 	"army": ["Swordman", "Swordman", "Swordman", "Swordman", "Swordman", "Swordman"]
     },
     {
@@ -13,8 +17,12 @@
         "name": "LinhCuaNghia",
         "atk": 15,
         "def": 15,
+	"atkAura": 2,
+	"defAura": 5,
         "posX": 8,
-        "posY": 8
-	"army": []
+        "posY": 8,
+	"commandRange": 3,
+	"moveRange": 4,
+	"army": ["Horseman", "Horseman", "Horseman"]
     }
 ]

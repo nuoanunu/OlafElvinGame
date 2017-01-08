@@ -5,7 +5,6 @@ public class ActionManager : MonoBehaviour {
     public GameObject YuMeMap;
    //C# trick ;v
     public GameUnit unitInControll { get; set; }
-    public  const int MOVE_RADIOUS = 10;
     // Use this for initialization
     void Start () {
 	
@@ -28,7 +27,8 @@ public class ActionManager : MonoBehaviour {
                     //Check coi có trong bán kính ko
                     int dx =  (int)Mathf.Abs(title.position.x - unitInControll.gameObject.transform.position.x);
                     int dz = (int)Mathf.Abs(title.position.z - unitInControll.gameObject.transform.position.z);
-                    if (dx  + dz  < MOVE_RADIOUS ) {
+					if (dx  + dz  <= unitInControll.GetComponent<GameUnit>().moveRange ) 
+					{
                         //Doi màu
                         Renderer rend = title.GetComponent<Renderer>();
                         rend.material.color = Color.Lerp(rend.material.color, Color.green, 0.5f);

@@ -17,9 +17,9 @@ namespace GameConst
 		};
 
 		public static Dictionary<string, ClassInfo> classes = new Dictionary<string, ClassInfo> (){
-			{"Swordman", new ClassInfo('I', 20, 16)},
-			{"Horseman", new ClassInfo('C', 22, 14)},
-			{"Spearman", new ClassInfo('S', 18, 18)}
+			{"Swordman", new ClassInfo('I', 20, 16, 6)},
+			{"Horseman", new ClassInfo('C', 22, 14, 8)},
+			{"Spearman", new ClassInfo('S', 18, 18, 5)}
 		};
 	}
 
@@ -28,12 +28,14 @@ namespace GameConst
 		public int baseAtk;
 		public int baseDef;
 		public char unitType;
+		public int moveRange;
 
-		public ClassInfo(char unitType, int baseAtk, int baseDef)
+		public ClassInfo(char unitType, int baseAtk, int baseDef, int moveRange)
 		{
 			this.unitType = unitType;
 			this.baseAtk = baseAtk;
 			this.baseDef = baseDef;
+			this.moveRange = moveRange;
 		}
 	}
 }

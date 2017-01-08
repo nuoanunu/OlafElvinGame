@@ -8,16 +8,20 @@ public abstract class GameUnit : MonoBehaviour
     public GameObject prefab;
     public int moveSpeed = 10;
     public float frameRate = 0.015f;
-    public int unitHP;
-    public int unitSide;
-    public char unitType;
 
+	public int unitSide;
 
+	public int unitHP;
+	public char unitType;
+
+	public int moveRange;
 	public int defAttr;
 	public int atkAttr;
-    public Vector3 previousPostion;
-    public Vector3 unitPostition;
-    public ArrayList childList;
+
+	public Vector3 previousPostion;
+	public Vector3 unitPostition;
+	public ArrayList childList;
+
     public abstract void takeDamage(int damageTaken);
 
     //tạm đã
