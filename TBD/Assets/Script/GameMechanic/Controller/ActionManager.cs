@@ -48,18 +48,14 @@ public class ActionManager : MonoBehaviour {
             {
                 foreach (Transform title in titlesHolder.transform)
                 {
-                    //Check coi có trong bán kính ko
-                    int dx = (int)Mathf.Abs(title.position.x - unitInControll.previousPostion.x);
-                    int dz = (int)Mathf.Abs(title.position.z - unitInControll.previousPostion.z);
-                    if (dx  +   dz < MOVE_RADIOUS )
-                    {
+                   
                         //Doi màu
                         Renderer rend = title.GetComponent<Renderer>();
                         rend.material.color = Color.Lerp(Color.white, Color.white, 0.5f);
                         //Remove component ra
                         Destroy(title.gameObject.GetComponent<TitleSelectionForMovement>());
           
-                    }
+                    
 
                 }
             }
