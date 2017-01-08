@@ -14,11 +14,11 @@ public class MapManager : MonoBehaviour
     private int dZ;
     private Vector3 origin;
 
-	private const string sceneDataDir = "SceneData/DefinedScenes/";
+	private const  string sceneDataDir = "SceneData/DefinedScenes/";
 
     public int lenX;
     public int lenZ;
-    public const float distanceToController = 0.5F; //thay vo day
+    public static readonly float distanceToController = 2f; //thay vo day
 
 	public string dataFileName;
 
@@ -59,7 +59,7 @@ public class MapManager : MonoBehaviour
 
 
 	GameObject spawnUnit (char unitType, string name, int atk, int def, int posX, int posY){
-		GameObject unit = (GameObject)Instantiate (Resources.Load ("Unit"));
+		GameObject unit = (GameObject)Instantiate (Resources.Load ("ArmyBase"));
 		unit.GetComponent<ArmyGroup>().unitType = unitType;
 		unit.GetComponent<ArmyGroup>().atkAttr = atk;
 		unit.GetComponent<ArmyGroup>().defAttr = def;

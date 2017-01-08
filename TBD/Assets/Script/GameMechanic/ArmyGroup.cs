@@ -94,7 +94,7 @@ public class ArmyGroup : GameUnit
 
     }
     private bool flag = true;
-
+    public bool testflag = true;
     // Use this for initialization because we want to set up some attributes in advance
     void Init()
     {
@@ -157,8 +157,21 @@ public class ArmyGroup : GameUnit
     // Update is called once per frame
     void Update()
     {
+        if (this.gameObject.name.Equals("LinhCuaNghia") && testflag) {
+            GameObject manager = GameObject.Find("GameManager");
+            manager.GetComponent<ActionManager>().initPositionChanging(this);
+            testflag = false;
+        }
 
 
+    }
+    public void OnMouseDown()
+    {
+        Debug.Log("Selected " + this.gameObject.name);
+        //Goi manager ra nao
+        
+        GameObject manager = GameObject.Find("GameManager");
+        manager.GetComponent<ActionManager>().initPositionChanging(this);
     }
 
 }

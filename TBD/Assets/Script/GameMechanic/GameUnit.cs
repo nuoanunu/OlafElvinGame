@@ -14,19 +14,20 @@ public abstract class GameUnit : MonoBehaviour
 
 	public int defAttr;
 	public int atkAttr;
-
+    public Vector3 previousPostion;
     public Vector3 unitPostition;
     public ArrayList childList;
     public abstract void takeDamage(int damageTaken);
 
 	private Dictionary<string, float> damageFactor;
-
+    //tạm đã
+ 
     public IEnumerator MoveToPoint(Vector3 targetPostion)
     {
-      
-        //small number to make it smooth, 0.04 makes it execute 25 times / sec
 
-        while (transform.position.x != targetPostion.x || transform.position.y != targetPostion.y || transform.position.z != targetPostion.z)
+        //small number to make it smooth, 0.04 makes it execute 25 times / sec
+        targetPostion = new Vector3(targetPostion.x, targetPostion.y + MapManager.distanceToController, targetPostion.z);
+        while (transform.position.x != targetPostion.x || transform.position.y != targetPostion.y  || transform.position.z != targetPostion.z)
         {
             yield return new WaitForSeconds(frameRate);
             //use WaitForSecondsRealtime if you want it to be unaffected by timescale
@@ -44,7 +45,8 @@ public abstract class GameUnit : MonoBehaviour
     }
     public void Move(Vector3 targetPostion)
     {
-
+        previousPostion = this.gameObject.transform.position;
+        unitPostition = targetPostion;
         StartCoroutine(MoveToPoint(targetPostion));
 
     }
