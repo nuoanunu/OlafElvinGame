@@ -5,7 +5,8 @@
         "atk": 20,
         "def": 10,
         "posX": 8,
-        "posY": 12
+        "posY": 12,
+	"army": ["Swordman", "Swordman", "Swordman", "Swordman", "Swordman", "Swordman"]
     },
     {
         "type": "I",
@@ -14,5 +15,6 @@
         "def": 15,
         "posX": 8,
         "posY": 8
+	"army": []
     }
 ]

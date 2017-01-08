@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using SimpleJSON;
+using GameConst;
 
 public class MapManager : MonoBehaviour
 {
@@ -58,12 +59,23 @@ public class MapManager : MonoBehaviour
     }
 
 
-	GameObject spawnUnit (char unitType, string name, int atk, int def, int posX, int posY){
+	GameObject spawnUnit (string unitClass, string heroName, Vector3 position){
 		GameObject unit = (GameObject)Instantiate (Resources.Load ("ArmyBase"));
-		unit.GetComponent<ArmyGroup>().unitType = unitType;
-		unit.GetComponent<ArmyGroup>().atkAttr = atk;
-		unit.GetComponent<ArmyGroup>().defAttr = def;
-		unit.transform.position = TilePos(posX, posY);
+		GameConst.ClassInfo classInfo = GameConst.Consts.classes [unitClass];
+		unit.GetComponent<ArmyGroup>().unitType = classInfo.unitType;
+		unit.GetComponent<ArmyGroup>().atkAttr = classInfo.baseAtk;
+		unit.GetComponent<ArmyGroup>().defAttr = classInfo.baseDef;
+		unit.transform.position = position;
+		unit.name = heroName + "Unit";
+
+		return unit;
+	}
+	GameObject spawnHero (char unitType, string name, int atk, int def, Vector3 position){
+		GameObject unit = (GameObject)Instantiate (Resources.Load ("HeroBase"));
+		unit.GetComponent<Hero>().unitType = unitType;
+		unit.GetComponent<Hero>().atkAttr = atk;
+		unit.GetComponent<Hero>().defAttr = def;
+		unit.transform.position = position;
 		unit.name = name;
 
 		return unit;
@@ -75,10 +87,39 @@ public class MapManager : MonoBehaviour
 		JSONNode data = JSON.Parse (jsonString);
 
 		for (int i = 0; i < data.Count; i++) 
-		{
+		{	
+			//Create hero first
 			JSONNode unitData = data [i];
-			spawnUnit (unitData ["type"].Value[0], unitData ["name"].Value, unitData ["atk"].AsInt,
-				unitData ["def"].AsInt, unitData ["posX"].AsInt, unitData ["posY"].AsInt);
+			char heroType = unitData ["type"].Value [0];
+			string heroName = unitData ["name"].Value;
+			int heroAtk = unitData ["atk"].AsInt;
+			int heroDef = unitData ["def"].AsInt;
+			int heroPosX = unitData ["posX"].AsInt;
+			int heroPosY = unitData ["posY"].AsInt;
+			print (heroType);
+			print (heroName);
+			print (heroAtk);
+			print (heroDef);
+			spawnHero (heroType, heroName, heroAtk, heroDef, TilePos(heroPosX, heroPosY));
+
+			//Initialize Stack of possible positions for armies
+			Queue<Vector3> possiblePositions = new Queue<Vector3> ();
+			possiblePositions.Enqueue(TilePos(heroPosX-1, heroPosY));
+			possiblePositions.Enqueue(TilePos(heroPosX+1, heroPosY));
+			possiblePositions.Enqueue(TilePos(heroPosX, heroPosY+1));
+			possiblePositions.Enqueue(TilePos(heroPosX, heroPosY-1));
+			possiblePositions.Enqueue(TilePos(heroPosX+1, heroPosY+1));
+			possiblePositions.Enqueue(TilePos(heroPosX+1, heroPosY-1));
+			possiblePositions.Enqueue(TilePos(heroPosX-1, heroPosY+1));
+			possiblePositions.Enqueue(TilePos(heroPosX-1, heroPosY-1));
+
+			//Create
+			JSONNode armyData = unitData ["army"];
+
+			for (int j = 0; j < armyData.Count; j++) 
+			{	
+				spawnUnit (unitData ["army"] [j].Value, heroName, possiblePositions.Dequeue());
+			}
 		}
 	}
 }
