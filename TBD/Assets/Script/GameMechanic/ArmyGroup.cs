@@ -112,13 +112,13 @@ public class ArmyGroup : GameUnit
                 //Row thứ 2 thì 4 thằng 
                 if (i == 1)
                 {
-                    cube.transform.position = new Vector3(this.transform.position.x - (1 - i) * 0.3f, this.transform.position.y, this.transform.position.z - (1.5f - z) * 0.25f);
+                    cube.transform.position = new Vector3(this.transform.position.x - (1 - i) * 0.3f, this.transform.position.y - MapManager.distanceToController + 0.5f, this.transform.position.z - (1.5f - z) * 0.25f);
                     //set relative position
                     cube.GetComponent<Creep>().ralativePosition = new Vector3((1 - i) * 0.3f, 0, (1.5f - z) * 0.25f);
                 }
                 else
                 {
-                    cube.transform.position = new Vector3(this.transform.position.x - (1 - i) * 0.3f, this.transform.position.y, this.transform.position.z - (1 - z) * 0.3f);
+                    cube.transform.position = new Vector3(this.transform.position.x - (1 - i) * 0.3f, this.transform.position.y - MapManager.distanceToController + 0.5f, this.transform.position.z - (1 - z) * 0.3f);
                     //set relative position
                     cube.GetComponent<Creep>().ralativePosition = new Vector3((1 - i) * 0.3f, 0, (1 - z) * 0.3f);
                 }
@@ -135,7 +135,7 @@ public class ArmyGroup : GameUnit
                 //Row thứ 2 thì 4 thằng 
                 if (i == 1)
                 {
-                    cube.transform.position = new Vector3(this.transform.position.x - (1 - i) * 0.3f, this.transform.position.y, this.transform.position.z - (1.5f - z) * 0.25f);
+                    cube.transform.position = new Vector3(this.transform.position.x - (1 - i) * 0.3f, this.transform.position.y - MapManager.distanceToController +0.5f, this.transform.position.z - (1.5f - z) * 0.25f);
                     //set relative position
                     cube.GetComponent<Creep>().ralativePosition = new Vector3((1 - i) * 0.3f, 0, (1.5f - z) * 0.25f);
                 }
@@ -157,11 +157,7 @@ public class ArmyGroup : GameUnit
     // Update is called once per frame
     void Update()
     {
-        if (this.gameObject.name.Equals("LinhCuaNghia") && testflag) {
-            GameObject manager = GameObject.Find("GameManager");
-            manager.GetComponent<ActionManager>().initPositionChanging(this);
-            testflag = false;
-        }
+      
 
 
     }

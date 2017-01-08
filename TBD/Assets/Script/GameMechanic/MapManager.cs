@@ -18,7 +18,7 @@ public class MapManager : MonoBehaviour
 
     public int lenX;
     public int lenZ;
-    public static readonly float distanceToController = 2f; //thay vo day
+    public static readonly float distanceToController = 1.5f; //thay vo day
 
 	public string dataFileName;
 
