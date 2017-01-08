@@ -49,8 +49,10 @@ public abstract class GameUnit : MonoBehaviour
 
     }
 
-	protected void Init(){
-		damageFactor = new Dictionary<string, float> () {
+	protected void Init()
+	{
+		damageFactor = new Dictionary<string, float> ()
+		{
 			{ "CC", 1F },		{ "CS", 0.25F },	{ "CI", 4F },		{ "CH", 3F },		{ "CG", 0.8F },		{ "CA", 2F },		{ "CF", 0.5F },
 			{ "SC", 4F },		{ "SS", 0.25F },	{ "SI", 0.25F }, 	{ "SH", 0.8F }, 	{ "SG", 0.5F }, 	{ "SA", 0.8F }, 	{ "SF", 0.25F },
 			{ "IC", 0.25F }, 	{ "IS", 3F }, 		{ "II", 1F }, 		{ "IH", 1.25F }, 	{ "IG", 0.8F }, 	{ "IA", 1.5F },		{ "IF", 0.5F },
@@ -75,11 +77,11 @@ public abstract class GameUnit : MonoBehaviour
 			possibility = 5;
 
 		int damage = 0;
-		for (int i=0; i < target.unitHP; i++){
+		for (int i=0; i < target.unitHP; i++)
+		{
 			float randNum = UnityEngine.Random.Range(0F, 100F);
-			if (randNum <= possibility) {
+			if (randNum <= possibility) 
 				damage++;
-			}
 		}
 		if (damage > this.unitHP)
 			damage = this.unitHP;

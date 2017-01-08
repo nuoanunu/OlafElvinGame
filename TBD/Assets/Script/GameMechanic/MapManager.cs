@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using SimpleJSON;
 
 public class MapManager : MonoBehaviour
 {
@@ -8,13 +9,18 @@ public class MapManager : MonoBehaviour
     private GameObject mapVertexA;
     private GameObject mapVertexB;
     private GameObject mapVertexC;
+
     private int dX;
     private int dZ;
     private Vector3 origin;
 
+	private const string sceneDataDir = "SceneData/DefinedScenes/";
+
     public int lenX;
     public int lenZ;
     public const float distanceToController = 0.5F; //thay vo day
+
+	public string dataFileName;
 
     // Use this for initialization
     void Start()
@@ -36,9 +42,7 @@ public class MapManager : MonoBehaviour
         lenZ = Mathf.Abs(dZ);
 
         origin = mapVertexA.transform.position; 
-
-		GameObject nhat = spawnUnit ('C', "LinhCuaNhat", 20, 10, 8, 12);
-		GameObject nghia = spawnUnit ('I', "LinhCuaNghia", 15, 15, 8, 8);
+		createUnitsFromData(sceneDataDir + dataFileName);
 
     }
 
@@ -63,5 +67,18 @@ public class MapManager : MonoBehaviour
 		unit.name = name;
 
 		return unit;
+	}
+
+	void createUnitsFromData(string fileName)
+	{
+		string jsonString = (Resources.Load (fileName) as TextAsset).text;
+		JSONNode data = JSON.Parse (jsonString);
+
+		for (int i = 0; i < data.Count; i++) 
+		{
+			JSONNode unitData = data [i];
+			spawnUnit (unitData ["type"].Value[0], unitData ["name"].Value, unitData ["atk"].AsInt,
+				unitData ["def"].AsInt, unitData ["posX"].AsInt, unitData ["posY"].AsInt);
+		}
 	}
 }

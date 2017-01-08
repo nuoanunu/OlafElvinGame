@@ -1,0 +1,18 @@
+﻿[
+    {
+        "type": "C",
+        "name": "LinhCuaNhat",
+        "atk": 20,
+        "def": 10,
+        "posX": 8,
+        "posY": 12
+    },
+    {
+        "type": "I",
+        "name": "LinhCuaNghia",
+        "atk": 15,
+        "def": 15,
+        "posX": 8,
+        "posY": 8
+    }
+]

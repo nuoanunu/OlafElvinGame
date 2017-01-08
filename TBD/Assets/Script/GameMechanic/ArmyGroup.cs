@@ -5,14 +5,16 @@ using System;
 public class ArmyGroup : GameUnit
 {
     private int status;
-    private const char INFRANTRY_UNIT_TYPE = 'I';
+    private const char INFANTRY_UNIT_TYPE = 'I';
     private const char CALAVRY_UNIT_TYPE = 'C';
     private const char SPEAR_UNIT_TYPE = 'S';
+
     private const int STATUS_IDLE = 1;
     private const int STATUS_CHARGING = 2;
     private const int STATUS_ATTACKING = 3;
-    private ArrayList creepList;
-    public int Counter;
+
+	private ArrayList creepList;
+
     public IEnumerator initFightingSequence(GameUnit target)
     {
         //De tạm chụp hình mốt xóa
