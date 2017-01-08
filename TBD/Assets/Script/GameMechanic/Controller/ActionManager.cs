@@ -19,6 +19,8 @@ public class ActionManager : MonoBehaviour {
         //Set đối tượng đang kiểm soát map
         unitInControll = newunitInControll;
         YuMeMap = GameObject.Find("YuME_MapData");
+        //Gọi phát cho nó chắc
+        resetTitleToDefaul();
         //hiện tại thì đang vét cạn , mà thực ra thì BigO = O(n) thôi ko sao nhỉ
         foreach (Transform layer in YuMeMap.transform) {
             foreach (Transform titlesHolder in layer.transform) {
@@ -26,7 +28,7 @@ public class ActionManager : MonoBehaviour {
                     //Check coi có trong bán kính ko
                     int dx =  (int)Mathf.Abs(title.position.x - unitInControll.gameObject.transform.position.x);
                     int dz = (int)Mathf.Abs(title.position.z - unitInControll.gameObject.transform.position.z);
-                    if (dx * dx + dz * dz < MOVE_RADIOUS * MOVE_RADIOUS) {
+                    if (dx  + dz  < MOVE_RADIOUS ) {
                         //Doi màu
                         Renderer rend = title.GetComponent<Renderer>();
                         rend.material.color = Color.Lerp(rend.material.color, Color.green, 0.5f);
@@ -49,7 +51,7 @@ public class ActionManager : MonoBehaviour {
                     //Check coi có trong bán kính ko
                     int dx = (int)Mathf.Abs(title.position.x - unitInControll.previousPostion.x);
                     int dz = (int)Mathf.Abs(title.position.z - unitInControll.previousPostion.z);
-                    if (dx * dx + dz * dz < MOVE_RADIOUS * MOVE_RADIOUS)
+                    if (dx  +   dz < MOVE_RADIOUS )
                     {
                         //Doi màu
                         Renderer rend = title.GetComponent<Renderer>();
