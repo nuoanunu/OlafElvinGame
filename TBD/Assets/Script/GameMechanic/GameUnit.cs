@@ -63,7 +63,9 @@ public abstract class GameUnit : MonoBehaviour
 			{ "AC", 3F }, 		{ "AS", 0.25F }, 	{ "AI", 1.5F }, 	{ "AH", 1.5F }, 	{ "AG", 0.8F },		{ "AA", 2F },		{ "AF", 3F },
 			{ "FC", 2F },	 	{ "FS", 0.8F }, 	{ "FI", 2F }, 		{ "FH", 1F }, 		{ "FG", 1F }, 		{ "FA", 2F }, 		{ "FF", 1F },
 		};
-	}
+        this.unitPostition = this.gameObject.transform.position;
+        this.previousPostion = this.gameObject.transform.position;
+    }
 
 	public int getDamage(GameUnit target)
 	{
