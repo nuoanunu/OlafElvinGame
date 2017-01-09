@@ -5,7 +5,9 @@ using GameConst;
 
 public abstract class GameUnit : MonoBehaviour
 {
+    GameObject manager;
     public GameObject prefab;
+
     public int moveSpeed = 10;
     public float frameRate = 0.015f;
 
@@ -15,15 +17,20 @@ public abstract class GameUnit : MonoBehaviour
 	public char unitType;
 
 	public int moveRange;
-	public int defAttr;
+    //Temp
+    public int atkRange = 5;
+
+    public int defAttr;
 	public int atkAttr;
 
 	public Vector3 previousPostion;
 	public Vector3 unitPostition;
 	public ArrayList childList;
 
+    private GameObject moveBtn;
+    private GameObject atkBtn;
     public abstract void takeDamage(int damageTaken);
-
+    private ArrayList btnList;
     //tạm đã
  
     public IEnumerator MoveToPoint(Vector3 targetPostion)
@@ -57,8 +64,30 @@ public abstract class GameUnit : MonoBehaviour
 
 	protected void Init()
 	{
+        //Danh sách nút :v
+        btnList = new ArrayList();
+
         this.unitPostition = this.gameObject.transform.position;
         this.previousPostion = this.gameObject.transform.position;
+
+        //init mấy cái button
+        foreach (Transform child in this.transform) {
+            if (child.gameObject.name.Equals("moveBtn")) {
+                child.gameObject.GetComponent<Renderer>().enabled = false;
+                child.gameObject.GetComponent<Collider>().enabled = false;
+                //This does not work :'(
+                //child.gameObject.GetComponent<ButtonSelector>().unitIncontrol = this;
+                child.gameObject.GetComponent<MoveButtonSelector>().unitIncontrol = this;
+            
+                btnList.Add(child.gameObject);
+            }
+            else if (child.gameObject.name.Equals("atkBtn")) {
+                child.gameObject.GetComponent<Renderer>().enabled = false;
+                child.gameObject.GetComponent<Collider>().enabled = false;
+                child.gameObject.GetComponent<AttackButtonSelector>().unitIncontrol = this;
+                btnList.Add(child.gameObject);
+            }
+        }
     }
 
 	public int getDamage(GameUnit target)
@@ -75,6 +104,7 @@ public abstract class GameUnit : MonoBehaviour
 			possibility = 5;
 
 		int damage = 0;
+       
 		for (int i=0; i < target.unitHP; i++)
 		{
 			float randNum = UnityEngine.Random.Range(0F, 100F);
@@ -86,4 +116,101 @@ public abstract class GameUnit : MonoBehaviour
 
 		return damage;
 	}
+    public void OnMouseDown()
+    {
+        //Goi manager ra nao
+        manager = GameObject.Find("GameManager");
+        Debug.Log("status dang la " + manager.GetComponent<ActionManager>().gameStatus);
+
+        //Phải check coi game đang ở state gì
+        //Nghĩa define 1 cái constant lưu state hen, tạm thời 0 là chua co j, 1 là atk
+        if (manager.GetComponent<ActionManager>().gameStatus == 0)
+        {
+            setActionChoosingState();
+        }
+        if (manager.GetComponent<ActionManager>().gameStatus == 1)
+        {
+            //ko dc danh bồ
+            if (manager.GetComponent<ActionManager>().unitInControll.unitSide != this.unitSide)
+            {
+                Debug.Log("Quanh de " + this.gameObject.name + " nó nè "  + manager.GetComponent<ActionManager>().unitInControll.name);
+                StartCoroutine( this.initFightingSequence(manager.GetComponent<ActionManager>().unitInControll));
+                manager.GetComponent<ActionManager>().resetTitleToDefaul();
+            }
+        }
+
+
+
+        //
+        //manager.GetComponent<ActionManager>().initPositionChanging(this);
+    }
+    public void setActionChoosingState()
+    {
+        foreach (GameObject btn in btnList) {
+            btn.GetComponent<Renderer>().enabled = true;
+            btn.GetComponent<Collider>().enabled = true;
+        }
+    }
+    public void setStateSelectingTarget() {
+        foreach (GameObject btn in btnList)
+        {
+            btn.GetComponent<Renderer>().enabled = false;
+            btn.GetComponent<Collider>().enabled = false;
+        }
+    }
+    public IEnumerator initFightingSequence(GameUnit target)
+    {
+        //De tạm chụp hình mốt xóa
+        yield return new WaitForSeconds(1.0f);
+
+        chargeToTarget(target);
+        yield return new WaitForSeconds(2.0f);
+
+        attackTarget(target);
+        yield return new WaitForSeconds(1.0f);
+
+        returnToPostion(target);
+        yield return new WaitForSeconds(1.0f);
+        //Once again mai coi lại
+        if (this.gameObject.GetComponent<ArmyGroup>() != null) {
+          ( (ArmyGroup) this).reArrangeFormation();
+            if (target.GetType().Equals(this.GetType()))
+            {
+                ((ArmyGroup)target) .reArrangeFormation();
+            }
+        }
+      
+        
+    }
+    public void chargeToTarget(GameUnit target)
+    {
+        //tạm đã chưa chính xác đâu
+        Vector3 fightPoint = Vector3.Lerp(target.transform.position, this.transform.position, 0.5f);
+        this.MoveThenReturn(fightPoint);
+        target.MoveThenReturn(fightPoint);
+   
+        // Cho tụi nó đếm số nè :3
+
+        //this.takeDamage(target.getDamage(this));
+        //target.takeDamage(this.getDamage(target));
+
+        //Đánh xong chạy về
+        //this.MoveThenReturn(this.unitPostition);
+        //target.MoveThenReturn(target.unitPostition);
+    }
+    public void attackTarget(GameUnit target)
+    {
+        int damageTaken = target.getDamage(this);
+        int damageDeal = this.getDamage(target);
+
+        this.takeDamage(damageTaken);
+        target.takeDamage(damageDeal);
+    }
+    //Poorly design, sad Nhật
+    public void returnToPostion(GameUnit target)
+    {
+        this.MoveThenReturn(this.unitPostition);
+        target.MoveThenReturn(target.unitPostition);
+    }
+
 }

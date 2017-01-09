@@ -19,54 +19,7 @@ public class ArmyGroup : GameUnit
 	public int extraAtk;
 	public int extraDef;
 
-    public IEnumerator initFightingSequence(GameUnit target)
-    {
-        //De tạm chụp hình mốt xóa
-        yield return new WaitForSeconds(1.0f);
 
-        chargeToTarget(target);
-        yield return new WaitForSeconds(2.0f);
-
-        attackTarget(target);
-        yield return new WaitForSeconds(1.0f);
-
-        returnToPostion(target);
-        yield return new WaitForSeconds(1.0f);
-        this.reArrangeFormation();
-        if (target.GetType().Equals(this.GetType()))
-        {
-            ((ArmyGroup)target).reArrangeFormation();
-        }
-    }
-    public void chargeToTarget(GameUnit target)
-    {
-        //tạm đã chưa chính xác đâu
-        Vector3 fightPoint = Vector3.Lerp(target.transform.position, this.transform.position, 0.5f);
-        this.MoveThenReturn(fightPoint);
-        target.MoveThenReturn(fightPoint);
-        // Cho tụi nó đếm số nè :3
-
-        //this.takeDamage(target.getDamage(this));
-        //target.takeDamage(this.getDamage(target));
-
-        //Đánh xong chạy về
-        //this.MoveThenReturn(this.unitPostition);
-        //target.MoveThenReturn(target.unitPostition);
-    }
-    public void attackTarget(GameUnit target)
-    {
-        int damageTaken = target.getDamage(this);
-        int damageDeal = this.getDamage(target);
-      
-        this.takeDamage(damageTaken);
-        target.takeDamage(damageDeal);
-    }
-    //Poorly design, sad Nhật
-    public void returnToPostion(GameUnit target)
-    {
-        this.MoveThenReturn(this.unitPostition);
-        target.MoveThenReturn(target.unitPostition);
-    }
     public void reArrangeFormation()
     {
 
@@ -90,6 +43,7 @@ public class ArmyGroup : GameUnit
             {
                 GameObject creep = (GameObject)creepList[i];
                 creep.transform.parent = null;
+                Destroy(creep);
             }
             creepList.RemoveRange(0, damageTaken);
             this.unitHP = this.unitHP - damageTaken;
@@ -173,30 +127,27 @@ public class ArmyGroup : GameUnit
     // Update is called once per frame
     void Update()
     {
-		int dx =  (int)Mathf.Abs(this.transform.position.x - hero.transform.position.x);
-		int dz =  (int)Mathf.Abs(this.transform.position.x - hero.transform.position.x);
-		Hero heroScript = hero.GetComponent<Hero> ();
-		if (dx + dz <= heroScript.commandRange) {
-			extraAtk = heroScript.atkAura;
-			extraDef = heroScript.defAura;
-		} 
-		else 
-		{
-			extraAtk = 0;
-			extraDef = 0;
-		}
+        if (hero != null) {
+            int dx = (int)Mathf.Abs(this.transform.position.x - hero.transform.position.x);
+            int dz = (int)Mathf.Abs(this.transform.position.x - hero.transform.position.x);
+            Hero heroScript = hero.GetComponent<Hero>();
+            if (dx + dz <= heroScript.commandRange)
+            {
+                extraAtk = heroScript.atkAura;
+                extraDef = heroScript.defAura;
+            }
+            else
+            {
+                extraAtk = 0;
+                extraDef = 0;
+            }
 
-		atkAttr = baseAtk + extraAtk;
-		defAttr = baseDef + extraDef;
+            atkAttr = baseAtk + extraAtk;
+            defAttr = baseDef + extraDef;
+        }
+		
 
     }
-    public void OnMouseDown()
-    {
-        Debug.Log("Selected " + this.gameObject.name);
-        //Goi manager ra nao
-        
-        GameObject manager = GameObject.Find("GameManager");
-        manager.GetComponent<ActionManager>().initPositionChanging(this);
-    }
+   
 
 }
