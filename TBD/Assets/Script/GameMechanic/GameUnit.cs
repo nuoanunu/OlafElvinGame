@@ -30,6 +30,7 @@ public abstract class GameUnit : MonoBehaviour
     private GameObject moveBtn;
     private GameObject atkBtn;
     public abstract void takeDamage(int damageTaken);
+	public abstract void updatePanel();
     private ArrayList btnList;
     //tạm đã
  
@@ -118,7 +119,9 @@ public abstract class GameUnit : MonoBehaviour
 	}
     public void OnMouseDown()
     {
-        //Goi manager ra nao
+		updatePanel ();
+
+		//Goi manager ra nao
         manager = GameObject.Find("GameManager");
         Debug.Log("status dang la " + manager.GetComponent<ActionManager>().gameStatus);
 
@@ -139,11 +142,10 @@ public abstract class GameUnit : MonoBehaviour
             }
         }
 
-
-
         //
         //manager.GetComponent<ActionManager>().initPositionChanging(this);
     }
+
     public void setActionChoosingState()
     {
         foreach (GameObject btn in btnList) {

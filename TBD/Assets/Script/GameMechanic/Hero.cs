@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Hero : GameUnit {
@@ -31,9 +32,23 @@ public class Hero : GameUnit {
 	{
 	}
 
-	public void OnMouseDown()
+	override
+	public void updatePanel()
 	{
-		GameObject manager = GameObject.Find("GameManager");
-		manager.GetComponent<ActionManager>().initPositionChanging(this);
+		//Update panel
+		GameObject infoPanel = GameObject.Find("InfoPanel");
+		infoPanel.SetActive (true);
+
+		Text hero = infoPanel.transform.Find ("Hero").Find ("Value").GetComponent<Text> ();
+		hero.text = this.name;
+
+		Text atkValue = infoPanel.transform.Find ("AtkPanel").Find ("Value").GetComponent<Text> ();
+		atkValue.text = this.atkAttr.ToString();
+
+		Text defValue = infoPanel.transform.Find ("DefPanel").Find ("Value").GetComponent<Text> ();
+		defValue.text = this.defAttr.ToString();
+
+		Text hpValue = infoPanel.transform.Find ("HPPanel").Find ("Value").GetComponent<Text> ();
+		hpValue.text = this.unitHP.ToString();
 	}
 }

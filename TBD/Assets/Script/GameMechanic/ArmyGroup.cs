@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System;
 
@@ -148,6 +149,26 @@ public class ArmyGroup : GameUnit
 		
 
     }
+
+	override
+	public void updatePanel()
+	{
+		//Update panel
+		GameObject infoPanel = GameObject.Find("GameCanvas").transform.Find("InfoPanel").gameObject;
+		infoPanel.SetActive (true);
+
+		Text hero = infoPanel.transform.Find ("Hero").Find ("Value").GetComponent<Text> ();
+		hero.text = this.hero.name;
+
+		Text atkValue = infoPanel.transform.Find ("AtkPanel").Find ("Value").GetComponent<Text> ();
+		atkValue.text = this.baseAtk.ToString() + " + " + this.extraAtk.ToString();
+
+		Text defValue = infoPanel.transform.Find ("DefPanel").Find ("Value").GetComponent<Text> ();
+		defValue.text = this.baseDef.ToString() + " + " + this.extraDef.ToString();
+
+		Text hpValue = infoPanel.transform.Find ("HPPanel").Find ("Value").GetComponent<Text> ();
+		hpValue.text = this.unitHP.ToString();
+	}
    
 
 }
