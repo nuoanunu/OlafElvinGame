@@ -72,23 +72,7 @@ public abstract class GameUnit : MonoBehaviour
         this.previousPostion = this.gameObject.transform.position;
 
         //init mấy cái button
-        foreach (Transform child in this.transform) {
-            if (child.gameObject.name.Equals("moveBtn")) {
-                child.gameObject.GetComponent<Renderer>().enabled = false;
-                child.gameObject.GetComponent<Collider>().enabled = false;
-                //This does not work :'(
-                //child.gameObject.GetComponent<ButtonSelector>().unitIncontrol = this;
-                child.gameObject.GetComponent<MoveButtonSelector>().unitIncontrol = this;
-            
-                btnList.Add(child.gameObject);
-            }
-            else if (child.gameObject.name.Equals("atkBtn")) {
-                child.gameObject.GetComponent<Renderer>().enabled = false;
-                child.gameObject.GetComponent<Collider>().enabled = false;
-                child.gameObject.GetComponent<AttackButtonSelector>().unitIncontrol = this;
-                btnList.Add(child.gameObject);
-            }
-        }
+        
     }
 
 	public int getDamage(GameUnit target)
@@ -119,17 +103,17 @@ public abstract class GameUnit : MonoBehaviour
 	}
     public void OnMouseDown()
     {
-		updatePanel ();
+
 
 		//Goi manager ra nao
         manager = GameObject.Find("GameManager");
-        Debug.Log("status dang la " + manager.GetComponent<ActionManager>().gameStatus);
-
+      
         //Phải check coi game đang ở state gì
         //Nghĩa define 1 cái constant lưu state hen, tạm thời 0 là chua co j, 1 là atk
         if (manager.GetComponent<ActionManager>().gameStatus == 0)
         {
             setActionChoosingState();
+            updatePanel();
         }
         if (manager.GetComponent<ActionManager>().gameStatus == 1)
         {
@@ -148,10 +132,7 @@ public abstract class GameUnit : MonoBehaviour
 
     public void setActionChoosingState()
     {
-        foreach (GameObject btn in btnList) {
-            btn.GetComponent<Renderer>().enabled = true;
-            btn.GetComponent<Collider>().enabled = true;
-        }
+       //Để dành, i am very sure there will be some shit to do here in the future :v
     }
     public void setStateSelectingTarget() {
         foreach (GameObject btn in btnList)
@@ -213,6 +194,13 @@ public abstract class GameUnit : MonoBehaviour
     {
         this.MoveThenReturn(this.unitPostition);
         target.MoveThenReturn(target.unitPostition);
+    }
+    public void updateButtonGroup() {
+        Debug.Log("Co dc goi ko vay");
+        GameObject atkBtn = GameObject.Find("AtkBtn");
+        atkBtn.GetComponent<AttackButtonSelector>().unitIncontrol = this;
+        GameObject moveBtn = GameObject.Find("MoveBtn");
+        moveBtn.GetComponent<MoveButtonSelector>().unitIncontrol = this;
     }
 
 }

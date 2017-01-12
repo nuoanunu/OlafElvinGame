@@ -50,5 +50,12 @@ public class Hero : GameUnit {
 
 		Text hpValue = infoPanel.transform.Find ("HPPanel").Find ("Value").GetComponent<Text> ();
 		hpValue.text = this.unitHP.ToString();
-	}
+
+        GameObject atkBtn = GameObject.Find("AtkBtn");
+        atkBtn.GetComponent<AttackButtonSelector>().unitIncontrol = this;
+        GameObject moveBtn = GameObject.Find("moveBtn");
+        moveBtn.GetComponent<MoveButtonSelector>().unitIncontrol = this;
+
+        updateButtonGroup();
+    }
 }

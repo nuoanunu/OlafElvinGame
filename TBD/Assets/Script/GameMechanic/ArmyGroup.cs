@@ -26,8 +26,7 @@ public class ArmyGroup : GameUnit
 
         foreach (GameObject creep in this.creepList)
         {
-            // Vector3 toReturnPostion = Vector3.Lerp(this.transform.position, -creep.GetComponent<Creep>().ralativePosition, 1);
-            //code tay cho chac91 :v 
+           
             Vector3 toReturnPostion = new Vector3(this.transform.position.x - creep.GetComponent<Creep>().ralativePosition.x,
                creep.transform.position.y,
                 this.transform.position.z - creep.GetComponent<Creep>().ralativePosition.z);
@@ -163,12 +162,15 @@ public class ArmyGroup : GameUnit
 		Text atkValue = infoPanel.transform.Find ("AtkPanel").Find ("Value").GetComponent<Text> ();
 		atkValue.text = this.baseAtk.ToString() + " + " + this.extraAtk.ToString();
 
+
 		Text defValue = infoPanel.transform.Find ("DefPanel").Find ("Value").GetComponent<Text> ();
 		defValue.text = this.baseDef.ToString() + " + " + this.extraDef.ToString();
 
 		Text hpValue = infoPanel.transform.Find ("HPPanel").Find ("Value").GetComponent<Text> ();
 		hpValue.text = this.unitHP.ToString();
-	}
+
+        updateButtonGroup();
+    }
    
 
 }

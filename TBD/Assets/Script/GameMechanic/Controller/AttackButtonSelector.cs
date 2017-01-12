@@ -12,11 +12,13 @@ public class AttackButtonSelector : ButtonSelector {
 	void Update () {
 	
 	}
-    public void OnMouseDown()
+    public void atkBtnClicked()
     {
+        if (unitIncontrol != null) {
+            GameObject manager = GameObject.Find("GameManager");
+            manager.GetComponent<ActionManager>().initFighting(unitIncontrol);
+            this.transform.parent.GetComponent<GameUnit>().setStateSelectingTarget();
+        }
 
-        GameObject manager = GameObject.Find("GameManager");
-        manager.GetComponent<ActionManager>().initFighting(unitIncontrol);
-        this.transform.parent.GetComponent<GameUnit>().setStateSelectingTarget();
     }
 }
